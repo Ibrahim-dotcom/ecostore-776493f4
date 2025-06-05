@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   {
@@ -42,6 +43,12 @@ const categories = [
 ];
 
 export function Categories() {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryName: string) => {
+    navigate(`/products?category=${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <section className="py-12 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -54,7 +61,11 @@ export function Categories() {
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category) => (
-            <Card key={category.id} className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105">
+            <Card 
+              key={category.id} 
+              className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105"
+              onClick={() => handleCategoryClick(category.name)}
+            >
               <CardContent className="p-4 text-center">
                 <div className="mb-3">
                   <img

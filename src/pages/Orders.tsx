@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Package, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const mockOrders = [
   {
@@ -39,6 +40,8 @@ const mockOrders = [
 ];
 
 const Orders = () => {
+  const navigate = useNavigate();
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'delivered':
@@ -50,6 +53,22 @@ const Orders = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const handleViewDetails = (orderId: string) => {
+    // For now, just show an alert. In real app, navigate to order detail page
+    alert(`Viewing details for ${orderId}`);
+  };
+
+  const handleReorder = (order: any) => {
+    // Add order items back to cart and navigate to products
+    alert(`Reordering items from ${order.id}`);
+    navigate('/products');
+  };
+
+  const handleTrackPackage = (orderId: string) => {
+    // For now, just show an alert. In real app, show tracking info
+    alert(`Tracking package for ${orderId}`);
   };
 
   return (
@@ -98,17 +117,17 @@ const Orders = () => {
                   ))}
                 </div>
                 <div className="flex gap-2 mt-4 pt-4 border-t">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleViewDetails(order.id)}>
                     <Eye className="h-4 w-4 mr-2" />
                     View Details
                   </Button>
                   {order.status === 'delivered' && (
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => handleReorder(order)}>
                       Reorder
                     </Button>
                   )}
                   {order.status === 'shipped' && (
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => handleTrackPackage(order.id)}>
                       Track Package
                     </Button>
                   )}
@@ -123,7 +142,7 @@ const Orders = () => {
             <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-xl font-semibold mb-2">No orders yet</h2>
             <p className="text-muted-foreground mb-4">Start shopping to see your orders here</p>
-            <Button onClick={() => window.location.href = '/products'}>
+            <Button onClick={() => navigate('/products')}>
               Continue Shopping
             </Button>
           </div>

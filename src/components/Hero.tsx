@@ -2,8 +2,19 @@
 import React from 'react';
 import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 export function Hero() {
+  const navigate = useNavigate();
+
+  const handleShopNow = () => {
+    navigate('/products');
+  };
+
+  const handleViewCategories = () => {
+    navigate('/products');
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/20">
       <div className="container mx-auto px-4 py-20 lg:py-32">
@@ -20,12 +31,12 @@ export function Hero() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={handleShopNow}>
                 <ShoppingBag className="mr-2 h-5 w-5" />
                 Shop Now
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={handleViewCategories}>
                 View Categories
               </Button>
             </div>

@@ -1,12 +1,13 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
 import { EnhancedProductFilters } from '@/components/EnhancedProductFilters';
 import { mockProducts } from '@/data/mockData';
+import { useSearchParams } from 'react-router-dom';
 
 const Products = () => {
+  const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
@@ -17,6 +18,14 @@ const Products = () => {
 
   const categories = ['all', ...new Set(mockProducts.map(p => p.category))];
   const brands = ['Apple', 'Samsung', 'Nike', 'Adidas', 'Sony', 'Microsoft'];
+
+  // Handle category filter from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && categories.includes(categoryParam)) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [searchParams]);
 
   const filteredProducts = mockProducts
     .filter(product => {
