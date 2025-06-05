@@ -22,6 +22,7 @@ export function Header() {
     { name: 'Products', path: '/products' },
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Admin', path: '/admin' },
+    { name: 'Orders', path: '/orders' },
   ];
 
   return (
@@ -66,9 +67,11 @@ export function Header() {
         <div className="flex items-center space-x-2">
           <ThemeToggle />
           
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <User className="h-5 w-5" />
-          </Button>
+          <Link to="/auth">
+            <Button variant="ghost" size="icon" className="hidden md:flex">
+              <User className="h-5 w-5" />
+            </Button>
+          </Link>
 
           <Button
             variant="ghost"
@@ -118,10 +121,12 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
-            <Button variant="ghost" className="w-full justify-start p-2">
-              <User className="h-5 w-5 mr-2" />
-              Account
-            </Button>
+            <Link to="/auth">
+              <Button variant="ghost" className="w-full justify-start p-2">
+                <User className="h-5 w-5 mr-2" />
+                Account
+              </Button>
+            </Link>
           </nav>
         </div>
       )}

@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 interface CartDrawerProps {
   open: boolean;
@@ -14,6 +15,12 @@ interface CartDrawerProps {
 
 export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const { items, total, updateQuantity, removeFromCart, clearCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    onOpenChange(false);
+    navigate('/checkout');
+  };
 
   if (items.length === 0) {
     return (
@@ -111,7 +118,7 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
             <span>Total:</span>
             <span>${total.toFixed(2)}</span>
           </div>
-          <Button size="lg" className="w-full">
+          <Button size="lg" className="w-full" onClick={handleCheckout}>
             Proceed to Checkout
           </Button>
         </div>

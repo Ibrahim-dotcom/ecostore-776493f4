@@ -3,21 +3,35 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
+import { EnhancedProductFilters } from '@/components/EnhancedProductFilters';
 import { mockProducts } from '@/data/mockData';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search } from 'lucide-react';
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [minRating, setMinRating] = useState(0);
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  const categories = ['all', ...new Set(mockProducts.map(p => p.category))];
+  const brands = ['Apple', 'Samsung', 'Nike', 'Adidas', 'Sony', 'Microsoft'];
 
   const filteredProducts = mockProducts
-    .filter(product => 
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === 'all' || product.category === selectedCategory)
-    )
+    .filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+      const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+      const matchesRating = product.rating >= minRating;
+      const matchesStock = !inStockOnly || product.stock > 0;
+      // For demo purposes, we'll assume all products match selected brands
+      const matchesBrands = selectedBrands.length === 0 || selectedBrands.some(brand => 
+        product.name.toLowerCase().includes(brand.toLowerCase())
+      );
+      
+      return matchesSearch && matchesCategory && matchesPrice && matchesRating && matchesStock && matchesBrands;
+    })
     .sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -26,12 +40,21 @@ const Products = () => {
           return b.price - a.price;
         case 'rating':
           return b.rating - a.rating;
+        case 'newest':
+          return b.id.localeCompare(a.id);
         default:
           return a.name.localeCompare(b.name);
       }
     });
 
-  const categories = ['all', ...new Set(mockProducts.map(p => p.category))];
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+    setPriceRange([0, 1000]);
+    setSelectedBrands([]);
+    setMinRating(0);
+    setInStockOnly(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,46 +63,30 @@ const Products = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">All Products</h1>
           <p className="text-muted-foreground">
-            Discover our complete collection of premium products
+            Discover our complete collection of premium products ({filteredProducts.length} items)
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>
-                  {category === 'all' ? 'All Categories' : category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full md:w-48">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Name</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="rating">Rating</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="mb-8">
+          <EnhancedProductFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            selectedBrands={selectedBrands}
+            setSelectedBrands={setSelectedBrands}
+            minRating={minRating}
+            setMinRating={setMinRating}
+            inStockOnly={inStockOnly}
+            setInStockOnly={setInStockOnly}
+            categories={categories}
+            brands={brands}
+            onClearFilters={handleClearFilters}
+          />
         </div>
 
         {/* Products Grid */}

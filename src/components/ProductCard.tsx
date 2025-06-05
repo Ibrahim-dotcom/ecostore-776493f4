@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Product } from '@/types/product';
 import { useCart } from '@/contexts/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
@@ -13,10 +14,20 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleProductClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(product);
+  };
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
-      <div className="relative overflow-hidden">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer">
+      <div className="relative overflow-hidden" onClick={handleProductClick}>
         <img
           src={product.image}
           alt={product.name}
@@ -34,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       
-      <CardContent className="p-4">
+      <CardContent className="p-4" onClick={handleProductClick}>
         <div className="mb-2">
           <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-primary transition-colors">
             {product.name}
@@ -66,7 +77,7 @@ export function ProductCard({ product }: ProductCardProps) {
           
           <Button
             size="sm"
-            onClick={() => addToCart(product)}
+            onClick={handleAddToCart}
             className="transition-all duration-200 hover:scale-105"
           >
             <ShoppingCart className="h-4 w-4 mr-1" />
