@@ -6,37 +6,37 @@ const categories = [
   {
     id: '1',
     name: 'Electronics',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=100&h=100&fit=crop&crop=center',
     productCount: 156,
   },
   {
     id: '2',
     name: 'Clothing',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=100&h=100&fit=crop&crop=center',
     productCount: 243,
   },
   {
     id: '3',
     name: 'Home & Garden',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=100&h=100&fit=crop&crop=center',
     productCount: 189,
   },
   {
     id: '4',
     name: 'Sports',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop&crop=center',
     productCount: 134,
   },
   {
     id: '5',
     name: 'Beauty',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=100&h=100&fit=crop&crop=center',
     productCount: 98,
   },
   {
     id: '6',
     name: 'Books',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=100&h=100&fit=crop&crop=center',
     productCount: 267,
   },
 ];

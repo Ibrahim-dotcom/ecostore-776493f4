@@ -49,7 +49,7 @@ export function Hero() {
           <div className="relative">
             <div className="relative z-10">
               <img
-                src="/placeholder.svg"
+                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=600&fit=crop&crop=center"
                 alt="Featured Product"
                 className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
               />
